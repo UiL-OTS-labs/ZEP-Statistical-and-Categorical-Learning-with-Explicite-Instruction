@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           output.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
+ADAPTED BY:     -
 
 DESCRIPTION:
 
@@ -10,7 +10,6 @@ Defines the formats of output table(s).
 
 HISTORY:
 2012-01-30 TV   Created.
-2016-03-03 AJM  Adapted
 
 \******************************************************************************/
 
@@ -18,16 +17,17 @@ HISTORY:
 // Test output table record.
 record TestOutput
 {
-    int         trialnum;           // trial number
-    int         id;                 // item id
-    ItemType    type;               // item type / rule
-    int         expected_answer;    // Item correctness (1=yes, 0=no)
-    string      sndfn1;             // stimulus sound 1 filename
-    string      sndfn2;             // stimulus sound 2 filename
-    int         value;              // response value: 0=no, 1=yes
-    int         correct;            // 1 = correct, 0 = incorrect
-    int         rt;                 // response time
-    int         audio_end;          // Start time of second sound (absolute minimum for valid reaction time)
+    int         trialnum;       // trial number
+
+    int         id;             // item id
+    StimType    type1;          // stimulus type for first interval
+    StimType    type2;          // stimulus type for second interval
+    string      sndfn1;         // stimulus sound filename first interval
+    string      sndfn2;         // stimulus sound filename second interval
+
+    int         value;          // response value: 0=diff, 1=same, -1=timeout
+    int         rt;             // response time [ms]
+    int         correct;        // correct response: 0=no, 1=yes, -1=n.a.
 }
 
 

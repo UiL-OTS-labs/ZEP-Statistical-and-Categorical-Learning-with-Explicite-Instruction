@@ -36,6 +36,10 @@ const string	END_OF_PRACTICE_TEXT			= "Dit is het einde van de oefening\n"
 	"Als u op dit moment nog vragen heeft, kunt u deze nu stellen.\n"
 	"Druk op enter om door te gaan";
 
+// Exposure / Instructions
+const string 	EXPOSURE_INTRODUCTION_TEXT = "Je hoort nu 120 geluiden.";
+const string	INSTRUCTION_INTRODUCTION_TEXT = "Luister nu naar een uitleg over de grammatica.";
+
 // Experiment texts
 const string	YESNOINCLUSIVE_INSTRUCTIONS		= 
 	"In het volgende segment hoort u telkens twee tonen uit de Chinese taal\n"
@@ -46,3 +50,29 @@ const string	YESNOINCLUSIVE_INSTRUCTIONS		=
 	"\n"
 	"<i>Druk op enter als u klaar bent te beginnen.</i>";
 const string	YESNOINCLUSIVE_QUESTION = "Hoorde u een echt woord?";
+const string	AXDISCRIMINATION_INSTRUCTIONS = 
+    "<b>Dear participant,</b>\n"
+    "\n"
+    "Thank you for participating in this experiment.\n"
+    "\n"
+    "You are now going to hear word fragments over the headphones. "
+    "The word fragments come in pairs. Your task is to indicate "
+    "for each pair as quickly as possible whether you think the "
+    "two fragments are <i>the same</i> or <i>different</i>.\n"
+    "\n"
+
+    "To respond, hit the left button on the button-box for "
+    "<i>Same</i> and the right button for <i>Different</i>.\n"
+
+//                "To respond, hit the left shift key for <i>Same</i> and the "
+//                "right shift key for <i>Different</i>.\n"
+
+//                "To respond, hit the left button on the button-box for "
+//                "<i>Same</i> and the right button for <i>Different</i>. "
+//                "Alternatively you can use the left or right shift keys.\n"
+
+    "\n"
+    "First we will do a short practice.\n"
+    "\n"
+//                "<i>Hit Enter when ready to start.</i>", 
+    "<i>Hit any button on the button-box when ready to start.</i>";

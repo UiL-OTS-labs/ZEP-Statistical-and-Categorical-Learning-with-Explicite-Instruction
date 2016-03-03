@@ -34,18 +34,20 @@ HISTORY:
 
 \******************************************************************************/
 
-requires 1.10;
+requires 1.12;
 
 import std_windows1;
 // import std_texts_en;
+import response_box;
 import std_entry_page1;
 import std_exit_page1;
 import std_pause_page;
 import std_blank_page;
 import texts_nl;
 
+import phase_exposure::task;
 import phase_yesnoinclusive::task;
-
+import phase_axdiscrimination::task;
 
 Experiment experiment
 {
@@ -75,12 +77,27 @@ Experiment experiment
         }
     }
 
+    Part exposure
+    {
+        on_event:entry()
+        {
+            phase_exposure::action(this);
+        }
+    }
 
     Part phase1
     {
         on_event:entry()
         {
             phase_yesnoinclusive::action(this);
+        }
+    }
+
+    Part phase2
+    {
+        on_event:entry()
+        {
+            phase_axdiscrimination::action(this);
         }
     }
 

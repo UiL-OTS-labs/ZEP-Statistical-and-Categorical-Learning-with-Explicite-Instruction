@@ -1,0 +1,21 @@
+/******************************************************************************\
+FILE:           defs.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
+
+DESCRIPTION:
+
+Defines experiment settings such as for trial timing.
+
+
+HISTORY:
+2012-01-30 TV   Created.
+2016-03-03 AJM	Adapted
+
+\******************************************************************************/
+
+
+// Duration of the interval between two trials.
+const dur       INTERTRIAL_INTERVAL             = 1000ms;
+
+const string	INSTRUCTION_FILE				= "baba.wav";

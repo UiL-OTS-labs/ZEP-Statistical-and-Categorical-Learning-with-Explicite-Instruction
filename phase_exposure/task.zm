@@ -1,0 +1,90 @@
+/******************************************************************************\
+FILE:           task.zm
+AUTHOR:         Jan de Mooij <A.J.deMooij@uu.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+Implementation of task: Sequential playing of sounds, without user interaction
+
+
+
+HISTORY:
+2016-03-03 AJM  Created
+
+\******************************************************************************/
+
+//requires 1.10;
+
+import defs;
+import shuffle;
+import stimuli;
+import test_page;
+
+
+Block task
+{
+    on_event:entry()
+    {
+    }
+
+    Part instructions
+    {
+        on_event:entry()
+        {
+//            pause_page.set_text_size(1000, 600);
+            if(selected_group == 0) {
+                pause_page.set_text(INSTRUCTION_INTRODUCTION_TEXT, true);
+            } else {
+                pause_page.set_text(EXPOSURE_INTRODUCTION_TEXT, true);
+            }
+
+            pause_page.action(this);
+        }
+    }
+
+    Block test
+    {
+        TestItem[..]    items;  // Items for current group (explicit / implicit)
+        TestItem        item;   // current item
+
+
+        on_event:entry()
+        {
+            // Randomize test items table.
+            if (shuffle_test_items() != OK) terminate;
+
+            num_cycles = test_items[selected_group].size;
+
+            // Prepare test page: progress bar enabled, prompt disabled.
+            test_page.setup(num_cycles, false);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                item = test_items[selected_group][test.cycle];
+                test_page.action(this, item, reference_time, test.cycle);
+            }
+
+            on_event:exit()
+            {
+            }
+        }
+    }
+}
+
+
+void action(Part caller)
+{
+    // Activate the task. When the task is done, the registered caller
+    // (c.q. the main experiment object) will automatically be signalled.
+    task.enter(caller);
+}

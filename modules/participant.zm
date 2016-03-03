@@ -1,0 +1,29 @@
+/******************************************************************************\
+FILE:           participant.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Provides participant database record field create and check functions.
+
+
+HISTORY:
+2011-08-27 TV   Created as part of the standard Zep modules.
+
+\******************************************************************************/
+
+
+// Creates required participant record fields.
+void create_participant_fields()
+{
+	expdb.participant.add_bool_field("dyslexic");
+}
+
+
+// Checks current values of participant record fields.
+int check_participant_fields()
+{
+	if (!expdb.participant.has_bool_field("dyslexic")) return ERROR;
+    return OK;
+}
