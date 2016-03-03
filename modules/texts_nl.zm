@@ -1,0 +1,48 @@
+/******************************************************************************\
+FILE:           std_texts_nl.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines texts on buttons and other graphic elements.
+Dutch version.
+
+
+HISTORY:
+2009-12-02 TV   Created as part of the standard Zep modules.
+
+\******************************************************************************/
+
+
+// Button texts.
+const string    CONTINUE_BUTTON_TEXT            = "Ga door";
+const string    NEXT_BUTTON_TEXT                = "Volgende";
+const string    REPEAT_BUTTON_TEXT              = "Herhaal";
+const string    YES_BUTTON_TEXT                 = "Ja";
+const string    NO_BUTTON_TEXT                  = "Nee";
+const string    TRUE_BUTTON_TEXT                = "Waar";
+const string    FALSE_BUTTON_TEXT               = "Onwaar";
+const string    CORRECT_BUTTON_TEXT             = "Correct";
+const string    INCORRECT_BUTTON_TEXT           = "Incorrect";
+const string    FIRST_BUTTON_TEXT               = "1e";
+const string    SECOND_BUTTON_TEXT              = "2e";
+
+
+// Other texts.
+const string    WELCOME_TEXT                    = "Welkom";
+const string    THANK_YOU_TEXT                  = "Einde experiment\n\nHartelijk dank!";
+const string	END_OF_PRACTICE_TEXT			= "Dit is het einde van de oefening\n"
+	"Als u op dit moment nog vragen heeft, kunt u deze nu stellen.\n"
+	"Druk op enter om door te gaan";
+
+// Experiment texts
+const string	YESNOINCLUSIVE_INSTRUCTIONS		= 
+	"In het volgende segment hoort u telkens twee tonen uit de Chinese taal\n"
+	"Aan u de taak om aan te geven of de twee tonen samen een correct woord\n"
+	"vormen. Gebruik de buttonbox om uw keuze aan te geven"
+	"\n"
+	"We beginnen met een oefenronde, waarbij we klanken uit het \nNederlands gebruiken.\n"
+	"\n"
+	"<i>Druk op enter als u klaar bent te beginnen.</i>";
+const string	YESNOINCLUSIVE_QUESTION = "Hoorde u een echt woord?";

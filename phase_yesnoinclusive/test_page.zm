@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           test_page.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
 
 DESCRIPTION:
 
@@ -11,6 +11,7 @@ It handles presenting the stimulus and recording the participant's response.
 
 HISTORY:
 2012-01-30 TV   Created.
+2016-03-03 AJM  Adapted
 
 \******************************************************************************/
 
@@ -20,7 +21,6 @@ import std_sound_output_device;
 Page test_page
 {
     TestItem    item;           // trial control parameters
-
 
     init()
     {
@@ -53,7 +53,7 @@ Page test_page
         {
             init()
             {
-//                fill_pattern_color = TEST_PAGE_STIMULUS_COLOR;
+//              fill_pattern_color = TEST_PAGE_STIMULUS_COLOR;
                 size = 450, 100;
                 offset_x = width / 2;
                 offset_y = height / 2;
@@ -161,7 +161,10 @@ Page test_page
     SoundChain stimulus
     {
         // Sound source/producer object.
-        SoundFile clip {}
+        SoundSequence seq {
+            SoundFile clip1 {};
+            SoundFile clip2 {};
+        }
 
 
         // Sound sink/consumer object.
@@ -173,7 +176,9 @@ Page test_page
             abort();
 
             playback.device = sound_output_device;
-            clip.file = stimuli_dir() + "sounds/" + item.sndfn;
+            seq.clip1.file = stimuli_dir() + "sounds/" + item.sndfn1;
+            seq.clip2.file = stimuli_dir() + "sounds/" + item.sndfn2;
+            seq.clip1.trailer_duration = INTERSTIMULUS_INTERVAL;
 
             start(t);
 
@@ -186,11 +191,13 @@ Page test_page
     {
         // Response data.
         int     value;          // response value: 0=no, 1=yes
-
+        int     rt;
+        int     stimoffset;
 
         void clear()
         {
             value = -1;
+            rt = -9999;
         }
 
 
@@ -203,6 +210,7 @@ Page test_page
             if (validity == HIT_VALID)
             {
                 value = val;
+                rt = int(reaction_time(0));
 
                 ignore_remaining_hits();
 
@@ -247,7 +255,7 @@ Page test_page
 
         // Show or hide prompt.
         test_page_overlay.show_prompt(pr ? 
-            "did you hear <b>ba</b>?" : "", true);
+            YESNOINCLUSIVE_QUESTION : "", true);
 
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
@@ -282,21 +290,20 @@ Page test_page
 
         // Start stimulus at fixation offset.
         time stimoffset = stimulus.play(fixoffset);
-
+        response.stimoffset = int(stimoffset - fixoffset);
 
         // Response interval starts at stimulus offset.
-        response.start(stimoffset);
-
+        response.start(fixoffset);
 
         // Update progress counter (if enabled).
         test_page_overlay.update_progress_bar(count);
-
 
         // Update status line on control window. Cleared in done() above.
         control.set_status(
             string(item.id) + "  " + 
             string(item.type) + "  " + 
-            string(item.sndfn));
+            string(item.sndfn1)  + "  " + 
+            string(item.sndfn2) + " " + string(item.expected_answer));
 
 
         // Remember who to signal when the trial is over.

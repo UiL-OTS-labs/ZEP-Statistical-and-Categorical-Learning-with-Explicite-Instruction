@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           task.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
 
 DESCRIPTION:
 
@@ -24,6 +24,7 @@ Global structure of this experiment phase:
 
 HISTORY:
 2012-01-30 TV   Created.
+2016-03-03 AJM  Adapted
 
 \******************************************************************************/
 
@@ -48,21 +49,7 @@ Block task
         on_event:entry()
         {
 //            pause_page.set_text_size(1000, 600);
-            pause_page.set_text(
-                "<b>Dear participant,</b>\n"
-                "\n"
-                "Thank you for participating in this experiment.\n"
-                "\n"
-                "You are now going to hear word fragments over the "
-                "headphones, one after the other. Your task is to indicate "
-                "for each sound whether you heard <b>ba</b> or not. Choose "
-                "<i>Yes</i> if you think it's <i>ba</i>, otherwise choose "
-                "<i>No</i>.\n"
-                "\n"
-                "First we will do a short practice.\n"
-                "\n"
-                "<i>Hit Enter when ready to start.</i>", 
-                true);
+            pause_page.set_text(YESNOINCLUSIVE_INSTRUCTIONS, true);
 
             pause_page.action(this);
         }
@@ -114,14 +101,7 @@ Block task
     {
         on_event:entry()
         {
-            pause_page.set_text(
-                "End of the practice part.\n"
-                "\n"
-                "If you have any questions at this moment please ask the "
-                "experimenter now.\n"
-                "\n"
-                "<i>Hit Enter when ready to proceed.</i>", 
-                true);
+            pause_page.set_text(END_OF_PRACTICE_TEXT, true);
 
             pause_page.action(this);
         }
@@ -169,11 +149,18 @@ Block task
             {
                 // Add new row to test output table.
                 TestOutput output;
-                output.trialnum = test.cycle + 1;
-                output.id = item.id;
-                output.type = item.type;
-                output.sndfn = item.sndfn;
-                output.value = test_page.response.value;
+                
+                output.trialnum             = test.cycle + 1;
+                output.id                   = item.id;
+                output.type                 = item.type;
+                output.expected_answer      = item.expected_answer;
+                output.sndfn1               = item.sndfn1;
+                output.sndfn2               = item.sndfn2;
+                output.value                = test_page.response.value;
+                output.correctness          = output.value == item.expected_answer;
+                output.rt                   = test_page.response.rt;
+                output.audio_end            = test_page.response.stimoffset;
+
                 test_output_append(output);
             }
         }

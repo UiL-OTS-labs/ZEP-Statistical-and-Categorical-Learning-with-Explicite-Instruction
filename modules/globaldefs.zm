@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           globaldefs.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     A.J.deMooij <A.J.deMooij@uu.nl>
 
 DESCRIPTION:
 
@@ -11,6 +11,7 @@ id of the default researcher.
 
 HISTORY:
 2013-07-03 TV   Created.
+2016-03-03 AJM	Adapted
 
 \******************************************************************************/
 

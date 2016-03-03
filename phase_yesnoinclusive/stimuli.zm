@@ -1,0 +1,57 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2012-01-30 TV   Created.
+2016-03-03 AJM  Adapted
+
+\******************************************************************************/
+
+
+// Symbolic definition of item type.
+enum ItemType
+{
+    R1,                 // Rule 1... elaborate
+    R2,                 // Rule 2... elaborate
+}
+
+
+// Item table record.
+record TestItem
+{
+    int         id;              // item id
+    ItemType    type;            // item type / rule
+    bool        expected_answer; // Expected (correct) answer
+    string      sndfn1;          // stimulus sound filename 1
+    string      sndfn2;          // stimulus sound filename 2
+}
+
+
+// Practice item table.
+//   index: item number
+TestItem[..] prac_items =
+{
+    {1, R1, false,  "bada1.wav",    "bada2.wav"},
+    {2, R2, true,   "bada5.wav",    "bada3.wav"},
+    {3, R2, true,   "bada3.wav",    "bada2.wav"},
+};
+
+
+// Test item table.
+//   index: item number
+TestItem[..] test_items =
+{
+    {1, R1, false,  "bada1.wav",    "bada1.wav"},
+    {2, R1, true,   "bada2.wav",    "bada1.wav"},
+    {3, R1, true,   "bada3.wav",    "bada1.wav"},
+    {4, R2, false,  "bada3.wav",    "bada4.wav"},
+    {5, R2, true,   "bada4.wav",    "bada5.wav"},
+};

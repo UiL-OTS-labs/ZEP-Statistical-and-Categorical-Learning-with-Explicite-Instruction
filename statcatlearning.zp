@@ -1,13 +1,13 @@
 /******************************************************************************\
-FILE:           ident_yn.zp
+FILE:           statcatlearning.zp
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl> 03-03-2016
 
 DESCRIPTION:
 
-Implementation of task: Auditory Identification with Yes-No Response
+Implementation of task: Statistical and Categorical Learning with Explicit Instruction
 
-For more information on the ident_yn task see readme.txt in the 
+For more information on the statcatlearning.zp task see readme.md in the 
 test folder.
 
 
@@ -15,26 +15,36 @@ Global structure of experiment:
 
   - welcome
 
-  - phase 1 (see subfolder test)
+  - Exposure (120 words; implicit instruction group only)
+
+  - Explenation of grammar (audio/video; explicit group only)
+
+  - Break
+
+  - phase 1: Yes-no-inclusive (see subfolder test1)
+
+  - phase 2: AX discrimination (see subfolder test2)
 
   - thankyou
 
 
 HISTORY:
 2013-07-03 TV   Created.
+2016-03-03 AJM  Adapted for Yes-no-inclusive and AX discrimination
 
 \******************************************************************************/
 
 requires 1.10;
 
 import std_windows1;
-import std_texts_en;
+// import std_texts_en;
 import std_entry_page1;
 import std_exit_page1;
 import std_pause_page;
 import std_blank_page;
+import texts_nl;
 
-import test::task;
+import phase_yesnoinclusive::task;
 
 
 Experiment experiment
@@ -70,7 +80,7 @@ Experiment experiment
     {
         on_event:entry()
         {
-            test::action(this);
+            phase_yesnoinclusive::action(this);
         }
     }
 
