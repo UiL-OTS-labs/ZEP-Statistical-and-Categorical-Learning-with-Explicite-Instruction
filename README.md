@@ -1,21 +1,38 @@
-# ZEP Identification Yes No Experiment
+# ZEP-Statistical-and-Categorical-Learning-with-Explicite-Instruction
+ZEP Task for Statistical and Categorical learning with implicit or explicit instruction. Contains auditory identification part and auditory AX discrimination part
+
 Experiment:
         Auditory Identification with Yes-No Response
+        Auditory Discrimination task
 
 Description:
         Purpose of this experiment is to measure a participant's ability 
-        to identify (speech) sounds. For each trial a sound is presented. 
+        to learn grammar rules for combining sounds with either implicit
+        or explicit instructions. 
+
+        The participant is exposed to a series of grammatically correct
+        combinations of sounds if the learning is implicit, or with an
+        instruction for how to combine sounds according to the grammar 
+        if the learning is explicit.
+
+        In the main task, for each trial two sounds are presented. 
         Participant's task is to jugdge whether a prespecified property is
-        present in the stimulus or not. Self-paced. Output: chosen value.
+        present in the stimulus or not. Self-paced. Output: RT, correctness
+
+        The final task measures the participants ability to distinguish between
+        the different sounds used in the main task. A participant is presented
+        with two sounds and indicates wether the sounds are the same or not.
+        Output: correctness
+
 
 Author:
-        Theo Veenker (UiL-OTS) <T.J.G.Veenker@uu.nl>
+        Jan de Mooij (UiL-OTS) <A.J.deMooij@uu.nl>
 
 Client:
-        -
+        Tjitske Bootsma
 
 Supervisor:
-        -
+        Carolien van den Hazelkamp
 
 References:
         -
@@ -23,7 +40,7 @@ References:
 
 You can start up the experiment by typing:
 
-        zep ident_yn
+        zep statcatlearning
 
 For more information on running the experiment and extracting the experiment
 results please go the the Zep website at http://www.hum.uu.nl/uilots/lab/zep
