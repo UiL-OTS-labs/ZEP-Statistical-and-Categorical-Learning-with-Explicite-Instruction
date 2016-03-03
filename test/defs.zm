@@ -1,0 +1,21 @@
+/******************************************************************************\
+FILE:           defs.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines experiment settings such as for trial timing.
+
+
+HISTORY:
+2012-01-30 TV   Created.
+
+\******************************************************************************/
+
+
+// Duration of the interval between two trials.
+const dur       INTERTRIAL_INTERVAL             = 1000ms;
+
+// Duration of the fixation symbol presentation.
+const dur       FIXATION_DURATION               = 1000ms;
