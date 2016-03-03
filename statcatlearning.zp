@@ -38,7 +38,6 @@ requires 1.12;
 
 import std_windows1;
 // import std_texts_en;
-import response_box;
 import std_entry_page1;
 import std_exit_page1;
 import std_pause_page;
@@ -54,6 +53,11 @@ Experiment experiment
     on_event:entry()
     {
         show_test_windows();
+        if (control.button_box.open("/dev/ttyACM0") != 0)
+        {
+            print_error("Warning: No button box available.\n");
+            terminate;
+        }
     }
 
 

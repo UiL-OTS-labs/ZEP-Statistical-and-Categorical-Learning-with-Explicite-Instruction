@@ -39,6 +39,10 @@ Page test_page
             handle_special_key(this, input_key, input_modifiers);
     }
 
+    on_event:message()
+    {
+        response.process_hit(message_arg, event_time);
+    }
 
     VerticalLayout layout
     {
@@ -261,6 +265,11 @@ Page test_page
 
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
+
+        control.target = this;
+        control.button_box.disable_buttons();
+        control.button_box.enable_button(0, 0); // button 0 means no(0)
+        control.button_box.enable_button(2, 1); // button 2 means yes(1)
     }
 
 
