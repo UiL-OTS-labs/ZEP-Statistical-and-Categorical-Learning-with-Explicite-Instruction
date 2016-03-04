@@ -165,6 +165,8 @@ Page test_page
         void reset()
         {
             full_abort();
+            buttons.button1.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
+            buttons.button2.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
         }
     }
 

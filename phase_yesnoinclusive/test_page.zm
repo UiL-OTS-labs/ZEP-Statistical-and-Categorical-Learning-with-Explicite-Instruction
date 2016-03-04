@@ -41,7 +41,13 @@ Page test_page
 
     on_event:message()
     {
-        response.process_hit(message_arg, event_time);
+        if(message_arg == layout.again.button_response)
+        {
+            layout.buttons.feedback_provider.start_feedback(layout.again);
+            layout.again.repeat_stimulus();
+        }
+        else
+            response.process_hit(message_arg, event_time);
     }
 
     VerticalLayout layout
@@ -147,6 +153,8 @@ Page test_page
 
         ButtonGadget again
         {
+            int button_response = 30;
+
             init()
             {
                 text = REPEAT_BUTTON_TEXT;
@@ -158,6 +166,11 @@ Page test_page
 
 
             on_event:activate()
+            {
+                repeat_stimulus();
+            }
+
+            void repeat_stimulus()
             {
                 stimulus.play(event_time + 100ms);
             }
@@ -177,6 +190,9 @@ Page test_page
         void reset()
         {
             full_abort();
+            buttons.button1.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
+            buttons.button2.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
+            again.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
         }
     }
 
@@ -294,6 +310,7 @@ Page test_page
         control.button_box.disable_buttons();
         control.button_box.enable_button(0, layout.buttons.button1.button_response); // button 0 means no(0)
         control.button_box.enable_button(2, layout.buttons.button2.button_response); // button 2 means yes(1)
+        control.button_box.enable_button(1, layout.again.button_response);
     }
 
 

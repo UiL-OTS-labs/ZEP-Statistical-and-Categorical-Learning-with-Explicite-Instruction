@@ -53,9 +53,14 @@ Experiment experiment
     on_event:entry()
     {
         show_test_windows();
-        control.button_box.open();
+         control.button_box.open();
     }
 
+    void enable_continue_button()
+    {
+        control.button_box.disable_buttons();
+        control.button_box.enable_button(1,0);
+    }
 
     on_event:message()
     {
@@ -67,11 +72,11 @@ Experiment experiment
         }
     }
 
-
     Part welcome
     {
         on_event:entry()
         {
+            enable_continue_button();
             entry_page.set_text(WELCOME_TEXT);
             entry_page.action(this, 0s);
         }
@@ -106,8 +111,8 @@ Experiment experiment
     {
         on_event:entry()
         {
+            enable_continue_button();
             control.end_experiment();   // Check-in session.
-
             exit_page.set_text(THANK_YOU_TEXT);
             exit_page.action(this, 10s);
         }
