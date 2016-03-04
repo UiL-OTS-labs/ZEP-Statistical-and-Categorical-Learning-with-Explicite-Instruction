@@ -25,6 +25,7 @@ Block task
 {
     on_event:entry()
     {
+        
     }
 
     Part instructions

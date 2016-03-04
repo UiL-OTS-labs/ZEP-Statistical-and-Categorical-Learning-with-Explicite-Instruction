@@ -42,3 +42,8 @@ const bool      GROUP_RECORD_UPDATEABLE         = false;
 // Set this to false if the experimenter should not be aware of the 
 // selected group.
 const bool      SHOW_ASSIGNED_GROUP             = true;
+
+
+// How long do the virtual (on screen) buttons become dark after
+// pressing a physical button on the button box
+const dur 		BUTTON_FEEDBACK_DURATION		= 100ms;

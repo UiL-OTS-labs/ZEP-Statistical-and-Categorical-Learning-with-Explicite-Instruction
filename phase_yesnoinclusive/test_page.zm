@@ -75,7 +75,6 @@ Page test_page
             }
         }
 
-
         HorizontalLayout buttons
         {
             init()
@@ -84,9 +83,28 @@ Page test_page
                 options = LAYOUT_EQUAL_WIDTH;
             }
 
+            Timer feedback_provider
+            {
+                ButtonGadget target_button;
+
+                time start_feedback(ButtonGadget button)
+                {
+                    target_button = button;
+                    target_button.fill_pattern_color = color:lightslategray;
+                    start(now() + BUTTON_FEEDBACK_DURATION);
+                    return this.expected_expire_time;
+                }
+
+                on_event:expire()
+                {
+                    target_button.fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
+                }
+            }
 
             ButtonGadget button1
             {
+                int button_response = 0;
+
                 init()
                 {
                     text = NO_BUTTON_TEXT;
@@ -97,16 +115,17 @@ Page test_page
                     size = 150, 75;
                 }
 
-
                 on_event:activate()
                 {
-                    response.process_hit(0, event_time);
+                    response.process_hit(button_response, event_time);
                 }
             }
 
 
             ButtonGadget button2
             {
+                int button_response = 1;
+
                 init()
                 {
                     text = YES_BUTTON_TEXT;
@@ -120,7 +139,7 @@ Page test_page
 
                 on_event:activate()
                 {
-                    response.process_hit(1, event_time);
+                    response.process_hit(button_response, event_time);
                 }
             }
         }
@@ -218,9 +237,16 @@ Page test_page
                 correct = val == item.expected_answer;
                 rt = int(reaction_time(0));
 
+                time stop_time = now();
+
+                if(layout.buttons.button1.button_response == val)
+                    stop_time = layout.buttons.feedback_provider.start_feedback(layout.buttons.button1);
+                else
+                    stop_time = layout.buttons.feedback_provider.start_feedback(layout.buttons.button2);
+
                 ignore_remaining_hits();
 
-                stop();
+                stop(stop_time);
             }
             else if (validity == HIT_TOO_EARLY || validity == HIT_TOO_LATE)
             {
@@ -228,13 +254,11 @@ Page test_page
             }
         }
 
-
         on_event:finish()
         {
             done(CONTINUE);
         }
     }
-
 
     // Aborts any ongoing activity on this page and signals the initiator
     // of the trial that we're done.
@@ -268,8 +292,8 @@ Page test_page
 
         control.target = this;
         control.button_box.disable_buttons();
-        control.button_box.enable_button(0, 0); // button 0 means no(0)
-        control.button_box.enable_button(2, 1); // button 2 means yes(1)
+        control.button_box.enable_button(0, layout.buttons.button1.button_response); // button 0 means no(0)
+        control.button_box.enable_button(2, layout.buttons.button2.button_response); // button 2 means yes(1)
     }
 
 
@@ -315,7 +339,6 @@ Page test_page
             string(item.type) + "  " + 
             string(item.sndfn1)  + "  " + 
             string(item.sndfn2) + " " + string(item.expected_answer));
-
 
         // Remember who to signal when the trial is over.
         target = caller;

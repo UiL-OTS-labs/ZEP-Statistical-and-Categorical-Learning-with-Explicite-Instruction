@@ -41,10 +41,6 @@ Block task
 {
     on_event:entry()
     {
-        control.button_box.open();
-
-        // If necessary set parallel port line D0 to power button box device.
-//        control.button_box.output(0x02);
     }
 
 
@@ -52,11 +48,11 @@ Block task
     {
         on_event:entry()
         {
-//            pause_page.set_text_size(1000, 600);
+//          pause_page.set_text_size(1000, 600);
             pause_page.set_text(AXDISCRIMINATION_INSTRUCTIONS, true);
 
             pause_page.action(this);
-            control.button_box.enable_all_buttons(CONTINUE);
+            //control.button_box.enable_all_buttons(CONTINUE);
         }
     }
 
@@ -86,7 +82,6 @@ Block task
             on_event:entry()
             {
                 item = prac_items[practice.cycle];
-
                 test_page.action(this, item, reference_time, practice.cycle);
             }
         }

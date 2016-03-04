@@ -48,9 +48,8 @@ Block task
     {
         on_event:entry()
         {
-//            pause_page.set_text_size(1000, 600);
+//          pause_page.set_text_size(1000, 600);
             pause_page.set_text(YESNOINCLUSIVE_INSTRUCTIONS, true);
-
             pause_page.action(this);
         }
     }
@@ -60,11 +59,10 @@ Block task
     {
         TestItem        item;   // current item
 
-
         on_event:entry()
         {
             num_cycles = prac_items.size;
-
+            
             // Prepare test page: progress bar and prompt enabled.
             test_page.setup(num_cycles, true);
         }
@@ -81,7 +79,6 @@ Block task
             on_event:entry()
             {
                 item = prac_items[practice.cycle];
-
                 test_page.action(this, item, reference_time, practice.cycle);
             }
         }
@@ -102,7 +99,6 @@ Block task
         on_event:entry()
         {
             pause_page.set_text(END_OF_PRACTICE_TEXT, true);
-
             pause_page.action(this);
         }
     }
