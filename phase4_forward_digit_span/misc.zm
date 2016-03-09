@@ -1,0 +1,31 @@
+/******************************************************************************\
+FILE:           misc.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Miscellaneous functions.
+
+
+HISTORY:
+2012-03-20 TV   Created.
+
+\******************************************************************************/
+
+
+// Returns specified string without any non-digits.
+string drop_nondigits(string s)
+{
+    string out;
+    int slen = length(s);
+    int n;
+    while (n < slen)
+    {
+        char c = character(s, n);
+        if (c >= '0' && c <= '9') out += c;
+        n++;
+    }
+
+    return out;
+}

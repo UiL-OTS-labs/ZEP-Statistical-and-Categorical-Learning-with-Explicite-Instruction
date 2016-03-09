@@ -1,0 +1,28 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2012-03-20 TV   Created.
+
+\******************************************************************************/
+
+
+// Item table record.
+record TestItem
+{
+    string      digits;         // target sequence of digits
+}
+
+
+// Test item table.
+// Initialized in shuffle.zm.
+//   index: item number
+TestItem[..] test_items;

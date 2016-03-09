@@ -44,9 +44,10 @@ import std_pause_page;
 import std_blank_page;
 import texts_nl;
 
-import phase_exposure::task;
-import phase_yesnoinclusive::task;
-import phase_axdiscrimination::task;
+import phase1_exposure::task;
+import phase2_yesnoinclusive::task;
+import phase3_axdiscrimination::task;
+import phase4_forward_digit_span::task;
 
 Experiment experiment
 {
@@ -72,37 +73,45 @@ Experiment experiment
         }
     }
 
-    Part welcome
-    {
-        on_event:entry()
-        {
-            enable_continue_button();
-            entry_page.set_text(WELCOME_TEXT);
-            entry_page.action(this, 0s);
-        }
-    }
+    // Part welcome
+    // {
+    //     on_event:entry()
+    //     {
+    //         enable_continue_button();
+    //         entry_page.set_text(WELCOME_TEXT);
+    //         entry_page.action(this, 0s);
+    //     }
+    // }
 
-    Part exposure
-    {
-        on_event:entry()
-        {
-            phase_exposure::action(this);
-        }
-    }
+    // Part exposure
+    // {
+    //     on_event:entry()
+    //     {
+    //         phase1_exposure::action(this);
+    //     }
+    // }
 
-    Part phase1
-    {
-        on_event:entry()
-        {
-            phase_yesnoinclusive::action(this);
-        }
-    }
+    // Part phase1
+    // {
+    //     on_event:entry()
+    //     {
+    //         phase2_yesnoinclusive::action(this);
+    //     }
+    // }
 
-    Part phase2
+    // Part phase2
+    // {
+    //     on_event:entry()
+    //     {
+    //         phase3_axdiscrimination::action(this);
+    //     }
+    // }
+
+    Part phase3
     {
         on_event:entry()
         {
-            phase_axdiscrimination::action(this);
+            phase4_forward_digit_span::action(this);
         }
     }
 

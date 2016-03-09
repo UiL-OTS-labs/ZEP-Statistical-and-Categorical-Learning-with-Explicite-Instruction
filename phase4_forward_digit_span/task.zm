@@ -1,0 +1,222 @@
+/******************************************************************************\
+FILE:           task.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Implementation of task: Visual Forward Digit Span
+See readme.txt for more information.
+
+
+Global structure of this experiment phase:
+
+  - instructions
+
+  - practice part
+      trial
+
+  - pause
+
+  - test part
+      trial
+
+
+HISTORY:
+2012-03-20 TV   Created.
+
+\******************************************************************************/
+
+//requires 1.10;
+
+import defs;
+import stimuli;
+import shuffle;
+import output;
+import misc;
+import test_page;
+
+
+Block task
+{
+    on_event:entry()
+    {
+    }
+
+
+    Part instructions
+    {
+        on_event:entry()
+        {
+//            pause_page.set_text_size(1000, 600);
+            pause_page.set_text(
+                "<b>Dear participant,</b>\n"
+                "\n"
+                "Thank you for participating in this experiment.\n"
+                "\n"
+                "This is memory experiment. You will see a sequence of digits "
+                "on the screen. After a few seconds they disappear. Your task "
+                "is then to type in the digits in the given order and then "
+                "hit Enter.\n"
+                "\n"
+                "First we will do a short practice.\n"
+                "\n"
+                "<i>Hit Enter when ready to start.</i>", 
+                true);
+
+            pause_page.action(this);
+        }
+    }
+
+
+    Block practice
+    {
+        TestItem        item;   // current item
+
+
+        on_event:entry()
+        {
+            // Setup test factor table (3 items, 2 digits ... 4 digits).
+            if (setup_test_items(2, 4) != OK) terminate;
+
+            num_cycles = test_items.size;
+
+            // Prepare test page: progress bar, feedback and prompt enabled.
+            test_page.setup(num_cycles, true, true);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                item = test_items[practice.cycle];
+
+                test_page.action(this, item, reference_time, practice.cycle);
+            }
+        }
+    }
+
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+
+    Part pause
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(
+                "End of the practice part.\n"
+                "\n"
+                "If you have any questions at this moment please ask the "
+                "experimenter now.\n"
+                "\n"
+                "<i>Hit Enter when ready to proceed.</i>", 
+                true);
+
+            pause_page.action(this);
+        }
+    }
+
+
+    Block test
+    {
+        TestItem        item;   // current item
+        int             span;   // memory span
+
+
+        on_event:entry()
+        {
+            // Setup test factor table (9 items, 2 digits ... 10 digits).
+            if (setup_test_items(2, 10) != OK) terminate;
+
+            num_cycles = test_items.size;
+
+            // Prepare test page: progress bar enabled, feedback and prompt 
+            // disabled.
+            test_page.setup(num_cycles, false, false);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+
+            // Add digit span score to test output table 1.
+            TestOutput output;
+            output.span = span;
+            test_output_append(output);
+
+            // Save test output tables as CSV files.
+            test_output_save();
+            test_output2_save();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                item = test_items[test.cycle];
+
+                test_page.action(this, item, reference_time, test.cycle);
+            }
+
+
+            on_event:exit()
+            {
+                // If response was correct determine span so far.
+                if (test_page.response.correct)
+                    span = length(drop_nondigits(item.digits));
+
+                // Add new row to test output table.
+                TestOutput2 output;
+                output.trialnum = test.cycle + 1;
+                output.digits = drop_nondigits(item.digits);
+                output.value = test_page.response.value;
+                output.rt = test_page.response.rt;
+                output.correct = test_page.response.correct;
+                test_output2_append(output);
+            }
+        }
+
+
+        TransientPart
+        {
+            on_event:entry()
+            {
+                // End the block if response was not correct.
+                if (!test_page.response.correct) test.leave();
+            }
+        }
+    }
+
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+}
+
+
+void action(Part caller)
+{
+    // Activate the task. When the task is done, the registered caller
+    // (c.q. the main experiment object) will automatically be signalled.
+    task.enter(caller);
+}

@@ -1,0 +1,303 @@
+/******************************************************************************\
+FILE:           test_page.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Provides a page object to show to the participant during test trials.
+It handles presenting the stimulus and recording the participant's response.
+
+
+HISTORY:
+2012-03-20 TV   Created.
+
+\******************************************************************************/
+
+
+Page test_page
+{
+    TestItem    item;           // trial control parameters
+
+
+    init()
+    {
+        fill_pattern_color = TEST_PAGE_COLOR;
+    }
+
+
+    on_event:key_press()
+    {
+        handle_special_key(this, input_key, input_modifiers);
+    }
+
+
+    VerticalLayout layout
+    {
+        init()
+        {
+            spacing = 50;
+            height = 0;     // 0 means as large as possible
+        }
+
+
+        LabelGadget stimulus
+        {
+            init()
+            {
+                fill_pattern_color = TEST_PAGE_STIMULUS_COLOR;
+                size = 600, 100;
+                font_family = TEST_PAGE_STIMULUS_FONT_FAMILY;
+                font_size = TEST_PAGE_STIMULUS_FONT_SIZE;
+                text_color = TEST_PAGE_STIMULUS_TEXT_COLOR;
+            }
+
+
+            on_event:pre_start()
+            {
+                text = item.digits;
+            }
+
+
+            on_event:pre_finish()
+            {
+                text = "";
+            }
+        }
+
+
+        TextFieldGadget input
+        {
+            init()
+            {
+                font_family = TEST_PAGE_INPUT_FONT_FAMILY;
+                font_size = TEST_PAGE_INPUT_FONT_SIZE;
+                fill_pattern_color = TEST_PAGE_INPUT_COLOR;
+                text_color = TEST_PAGE_INPUT_TEXT_COLOR;
+                width_en = 20;
+                is_visible = false;
+            }
+
+
+            on_event:enter()
+            {
+                // Only accept when characters have been entered.
+                if (text != "")
+                    response.process_hit(text, event_time);
+            }
+        }
+
+
+        time start_stimulus(time t)
+        {
+            // Start stimulus.
+            stimulus.start(t, STIMULUS_DURATION);
+
+            // Return stimulus offset time.
+            return stimulus.expected_finish_time;
+        }
+
+
+        void reset()
+        {
+            full_abort();
+
+            input.text = "";
+        }
+    }
+
+
+    Response response
+    {
+        // Response data.
+        string  value;          // value: entered text
+        int     rt;             // response time [ms]
+        int     correct;        // correct response: 0=no, 1=yes, -1=n.a.
+
+
+        void clear()
+        {
+            value = "";
+            rt = -9999;
+            correct = -1;
+        }
+
+
+        void process_hit(string val, time t)
+        {
+            HitType validity = hit(t);
+
+            // Accept the first hit in the response interval and end the 
+            // response interval.
+            if (is_valid_value(val) && validity == HIT_VALID)
+            {
+                value = val;
+                rt = int(reaction_time(0));
+                correct = is_correct_value(val);
+
+                ignore_remaining_hits();
+
+                stop();
+            }
+            else if (validity == HIT_TOO_EARLY || validity == HIT_TOO_LATE)
+            {
+                // False alarm. Deal with this if desired.
+            }
+        }
+
+
+        // Checks if string contains one or more digits.
+        bool is_valid_value(string s)
+        {
+            bool ok = false;
+            int slen = length(s);
+            int n;
+            while (n < slen)
+            {
+                char c = character(s, n);
+                if (c >= '0' && c <= '9') 
+                {
+                    ok = true;
+                    break;
+                }
+                n++;
+            }
+
+            return ok;
+        }
+
+
+        // Checks if digits in string matches item.digits.
+        bool is_correct_value(string s)
+        {
+            // Drop all spaces from the item's digits string.
+            string digits;
+            int slen = length(item.digits);
+            int n;
+            while (n < slen)
+            {
+                char c = character(item.digits, n);
+                if (c >= '0' && c <= '9') digits += c;
+                n++;
+            }
+
+            // Drop all non-digits from the input string.
+            string input;
+            slen = length(s);
+            n = 0;
+            while (n < slen)
+            {
+                char c = character(s, n);
+                if (c >= '0' && c <= '9') input += c;
+                n++;
+            }
+
+            // Return true if input matches digits.
+            return input == digits;
+        }
+
+
+        on_event:start()
+        {
+            layout.input.is_visible = true;
+        }
+
+
+        on_event:finish()
+        {
+            layout.input.is_visible = false;
+
+            real correctness = 0;
+            if (num_valid_hits > 0) correctness = correct ? 1 : -1;
+
+            if (!test_page_overlay.start_feedback(this, correctness, 
+                    FEEDBACK_DURATION)) 
+                done(CONTINUE);
+        }
+
+
+        on_event:message()
+        {
+            done(CONTINUE);
+        }
+    }
+
+
+    // Aborts any ongoing activity on this page and signals the initiator
+    // of the trial that we're done.
+    void done(int msgid)
+    {
+        // Just in case; abort presentation if still active.
+        layout.reset();
+
+        signal_target(msgid);   // tell caller we're done
+        target = null;
+
+        control.clear_status();
+    }
+
+
+    //==========================================================================
+
+
+    // Performs preparatory work required before using this page.
+    void setup(int ntrials=-1, bool fb=false, bool pr=false)
+    {
+        test_page_overlay.setup(this);
+
+        // Show or hide prompt.
+        test_page_overlay.show_prompt(pr ? 
+            "type in digits in given order" : "");
+
+        // Enable or disable the progress bar.
+        test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
+
+        // Enable or disable feedback.
+        test_page_overlay.enable_feedback(fb);          // disabled if false
+    }
+
+
+    // Performs cleaning up if necessary.
+    void cleanup()
+    {
+        test_page_overlay.cleanup();
+    }
+
+
+    // Starts a trial.
+    void action(Object caller, TestItem it, time tref, int count=-1)
+    {
+        // Save the passed trial control parameters.
+        item = it;
+
+
+        // Show this page (if not yet done) and make tref the trial start time.
+        tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
+
+
+        // Reset response data.
+        response.clear();
+
+
+        // Start stimulus.
+        time stimoffset = layout.start_stimulus(tref);
+
+
+        // Response interval starts at stimulus offset + STIM_RESP_INTERVAL. 
+        // Timeout after RESPONSE_DURATION unless this duration is 0s or less.
+        response.start(stimoffset + STIM_RESP_INTERVAL, RESPONSE_DURATION);
+
+
+        // Update progress counter (if enabled).
+        test_page_overlay.update_progress_bar(count);
+
+
+        // Update status line on control window. Cleared in done() above.
+        control.set_status(
+            string(item.digits));
+
+
+        // Remember who to signal when the trial is over.
+        target = caller;
+    }
+}

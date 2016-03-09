@@ -152,12 +152,10 @@ Block task
                 output.id                   = item.id;
                 output.type                 = item.type;
                 output.expected_answer      = item.expected_answer;
-                output.sndfn1               = item.sndfn1;
-                output.sndfn2               = item.sndfn2;
+                output.sndfn                = item.sndfn;
                 output.value                = test_page.response.value;
                 output.correct              = test_page.response.correct;
                 output.rt                   = test_page.response.rt;
-                output.audio_end            = test_page.response.stimoffset;
 
                 test_output_append(output);
             }

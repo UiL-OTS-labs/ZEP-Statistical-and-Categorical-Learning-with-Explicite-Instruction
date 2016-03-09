@@ -1,0 +1,60 @@
+/******************************************************************************\
+FILE:           shuffle.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Item table shuffling functions.
+
+
+HISTORY:
+2012-03-20 TV   Created.
+
+\******************************************************************************/
+
+
+// Prepares test_items table with random digits with the restriction that 
+// there won't be more than two identical adjacent digits.
+int setup_test_items(int ndigitsmin, int ndigitsmax)
+{
+    int nitems = ndigitsmax - ndigitsmin + 1;
+    test_items.size = nitems;
+
+    string digits;
+    int n;
+    char ch1;
+    char ch2;
+    while (n < ndigitsmin)
+    {
+        char ch = char(0x30 + random(1, 9));
+        while (ch == ch1 && ch == ch2) 
+            ch = char(0x30 + random(1, 9));
+
+        digits += ch;
+        digits += ' ';
+
+        n++;
+        ch2 = ch1;
+        ch1 = ch;
+    }
+
+    n = 0;
+    while (n < nitems)
+    {
+        test_items[n].digits = digits;
+
+        char ch = char(0x30 + random(1, 9));
+        while (ch == ch1 && ch == ch2)
+            ch = char(0x30 + random(1, 9));
+
+        digits += ch;
+        digits += ' ';
+        n++;
+
+        ch2 = ch1;
+        ch1 = ch;
+    }
+
+    return OK;
+}

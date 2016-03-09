@@ -18,6 +18,7 @@ HISTORY:
 void create_participant_fields()
 {
 	expdb.participant.add_bool_field("dyslexic");
+	expdb.participant.add_enum_field("handedness", "left|right");
 }
 
 
@@ -25,5 +26,6 @@ void create_participant_fields()
 int check_participant_fields()
 {
 	if (!expdb.participant.has_bool_field("dyslexic")) return ERROR;
+	if (!expdb.participant.has_enum_field("handedness")) return ERROR;
     return OK;
 }

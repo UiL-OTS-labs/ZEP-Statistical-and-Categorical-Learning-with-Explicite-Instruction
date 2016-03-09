@@ -41,13 +41,7 @@ Page test_page
 
     on_event:message()
     {
-        if(message_arg == layout.again.button_response)
-        {
-            layout.buttons.feedback_provider.start_feedback(layout.again);
-            layout.again.repeat_stimulus();
-        }
-        else
-            response.process_hit(message_arg, event_time);
+        response.process_hit(message_arg, event_time);
     }
 
     VerticalLayout layout
@@ -150,33 +144,6 @@ Page test_page
             }
         }
 
-
-        ButtonGadget again
-        {
-            int button_response = 30;
-
-            init()
-            {
-                text = REPEAT_BUTTON_TEXT;
-                font_family = TEST_PAGE_BUTTON_FONT_FAMILY;
-                font_size = TEST_PAGE_BUTTON_FONT_SIZE;
-                fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
-                text_color = TEST_PAGE_BUTTON_TEXT_COLOR;
-            }
-
-
-            on_event:activate()
-            {
-                repeat_stimulus();
-            }
-
-            void repeat_stimulus()
-            {
-                stimulus.play(event_time + 100ms);
-            }
-        }
-
-
         time start_fixation(time t)
         {
             // Start fixation cross.
@@ -192,7 +159,6 @@ Page test_page
             full_abort();
             buttons.button1.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
             buttons.button2.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
-            again.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
         }
     }
 
@@ -200,11 +166,7 @@ Page test_page
     SoundChain stimulus
     {
         // Sound source/producer object.
-        SoundSequence seq {
-            SoundFile clip1 {};
-            SoundFile clip2 {};
-        }
-
+        SoundFile clip { }
 
         // Sound sink/consumer object.
         SoundPlayback playback {}
@@ -215,9 +177,7 @@ Page test_page
             abort();
 
             playback.device = sound_output_device;
-            seq.clip1.file = stimuli_dir() + "sounds/" + item.sndfn1;
-            seq.clip2.file = stimuli_dir() + "sounds/" + item.sndfn2;
-            seq.clip1.trailer_duration = INTERSTIMULUS_INTERVAL;
+            clip.file = stimuli_dir() + "sounds/" + item.sndfn;
 
             start(t);
 
@@ -232,7 +192,6 @@ Page test_page
         int     value;          // response value: 0=no, 1=yes
         int     rt;
         int     correct;
-        int     stimoffset;
 
         void clear()
         {
@@ -310,7 +269,6 @@ Page test_page
         control.button_box.disable_buttons();
         control.button_box.enable_button(0, layout.buttons.button1.button_response); // button 0 means no(0)
         control.button_box.enable_button(2, layout.buttons.button2.button_response); // button 2 means yes(1)
-        control.button_box.enable_button(1, layout.again.button_response);
     }
 
 
@@ -339,13 +297,11 @@ Page test_page
         // Start fixation symbol.
         time fixoffset = layout.start_fixation(tref);
 
-
         // Start stimulus at fixation offset.
         time stimoffset = stimulus.play(fixoffset);
-        response.stimoffset = int(stimoffset - fixoffset);
 
         // Response interval starts at stimulus offset.
-        response.start(fixoffset);
+        response.start(stimoffset);
 
         // Update progress counter (if enabled).
         test_page_overlay.update_progress_bar(count);
@@ -354,8 +310,7 @@ Page test_page
         control.set_status(
             string(item.id) + "  " + 
             string(item.type) + "  " + 
-            string(item.sndfn1)  + "  " + 
-            string(item.sndfn2) + " " + string(item.expected_answer));
+            string(item.sndfn));
 
         // Remember who to signal when the trial is over.
         target = caller;

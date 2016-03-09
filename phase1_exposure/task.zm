@@ -16,7 +16,6 @@ HISTORY:
 //requires 1.10;
 
 import defs;
-import shuffle;
 import stimuli;
 import test_page;
 
@@ -52,7 +51,7 @@ Block task
         on_event:entry()
         {
             // Randomize test items table.
-            if (shuffle_test_items() != OK) terminate;
+            //if (shuffle_test_items() != OK) terminate;
 
             num_cycles = test_items[selected_group].size;
 

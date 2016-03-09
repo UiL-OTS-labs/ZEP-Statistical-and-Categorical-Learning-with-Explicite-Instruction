@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           defs.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
+ADAPTED BY:     -
 
 DESCRIPTION:
 
@@ -9,8 +9,7 @@ Defines experiment settings such as for trial timing.
 
 
 HISTORY:
-2012-01-30 TV   Created.
-2016-03-03 AJM	Adapted
+2012-03-20 TV   Created.
 
 \******************************************************************************/
 
@@ -18,17 +17,16 @@ HISTORY:
 // Duration of the interval between two trials.
 const dur       INTERTRIAL_INTERVAL             = 1000ms;
 
-// Duration of the interval between the stimuli in a trial.
-const dur       INTERSTIMULUS_INTERVAL          = 250ms;
-
-// Duration of the fixation symbol presentation.
-const dur       FIXATION_DURATION               = 1000ms;
+// Duration of the stimulus presentation.
+const dur       STIMULUS_DURATION               = 2000ms;
 
 // Duration of the feedback presentation.
 const dur       FEEDBACK_DURATION               = 1000ms;
 
+// Interval between stimulus offset and response period onset.
+const dur       STIM_RESP_INTERVAL              = 100ms;
+
 // Duration of the response interval. A value of 0ms means there is no
 // timeout.
-const dur       RESPONSE_DURATION               = 2000ms;       // auto-paced
-//const dur       RESPONSE_DURATION             = 0ms;          // self-paced
-
+//const dur       RESPONSE_DURATION               = 10000ms;      // auto-paced
+const dur       RESPONSE_DURATION               = 0ms;          // self-paced
