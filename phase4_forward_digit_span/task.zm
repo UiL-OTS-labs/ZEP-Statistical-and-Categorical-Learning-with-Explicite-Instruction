@@ -71,7 +71,7 @@ Block task
             num_cycles = test_items.size;
 
             // Prepare test page: progress bar, feedback and prompt enabled.
-            test_page.setup(num_cycles, true, true);
+            test_page.setup(num_cycles, FORWARDIGITSPAN_SHOW_FEEDBACK, true);
         }
 
 

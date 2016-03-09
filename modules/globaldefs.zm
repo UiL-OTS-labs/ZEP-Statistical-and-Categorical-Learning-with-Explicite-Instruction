@@ -52,3 +52,12 @@ const dur 		BUTTON_FEEDBACK_DURATION		= 100ms;
 // Wether or not to show the question the participant awnsers
 // in the test phase (otherwise practice phase only)
 const bool 		ALWAYS_SHOW_PROMPT				= false;
+
+
+// Show feedback on practice parts?
+// Feedback is only shown during practice, not during actual test
+// For each phase, if below is set to false, no feedback is shown
+//	during practice either
+const bool		YESNOINCLUSIVE_SHOW_FEEDBACK 	= true;
+const bool		AXDISCRIMINATION_SHOW_FEEDBACK 	= true;
+const bool		FORWARDIGITSPAN_SHOW_FEEDBACK 	= true;

@@ -199,6 +199,7 @@ Page test_page
         {
             value = -1;
             rt = -9999;
+            correct = -1;
         }
 
 
@@ -239,6 +240,15 @@ Page test_page
 
         on_event:finish()
         {
+            real correctness = 0;
+            if (num_valid_hits > 0) correctness = correct ? 1 : -1;
+            if(!test_page_overlay.start_feedback(this, correctness, 
+                    FEEDBACK_DURATION))
+                done(CONTINUE);
+        }
+
+        on_event:message()
+        {
             done(CONTINUE);
         }
     }
@@ -262,7 +272,7 @@ Page test_page
 
 
     // Performs preparatory work required before using this page.
-    void setup(int ntrials=-1, bool pr=false)
+    void setup(int ntrials=-1, bool fb=false, bool pr=false)
     {
         test_page_overlay.setup(this);
 
@@ -272,6 +282,9 @@ Page test_page
 
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
+
+        // Enable or disable feedback.
+        test_page_overlay.enable_feedback(fb);          // disabled if false
 
         control.target = this;
         control.button_box.disable_buttons();
