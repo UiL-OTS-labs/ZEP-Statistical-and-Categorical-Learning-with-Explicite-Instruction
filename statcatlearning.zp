@@ -73,23 +73,25 @@ Experiment experiment
         }
     }
 
-    // Part welcome
-    // {
-    //     on_event:entry()
-    //     {
-    //         enable_continue_button();
-    //         entry_page.set_text(WELCOME_TEXT);
-    //         entry_page.action(this, 0s);
-    //     }
-    // }
 
-    // Part exposure
-    // {
-    //     on_event:entry()
-    //     {
-    //         phase1_exposure::action(this);
-    //     }
-    // }
+    Part welcome
+    {
+        on_event:entry()
+        {
+            enable_continue_button();
+            entry_page.set_text(WELCOME_TEXT);
+            entry_page.action(this, 0s);
+        }
+    }
+
+    Part exposure
+    {
+        on_event:entry()
+        {
+            phase1_exposure::action(this);
+        }
+    }
+
 
     Part phase1
     {

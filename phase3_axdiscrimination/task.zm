@@ -48,13 +48,14 @@ Block task
     {
         on_event:entry()
         {
+            load_practice_items();
+            load_stimuli();
+            
             control.button_box.disable_buttons();
             control.button_box.enable_button(1,0);
-//          pause_page.set_text_size(1000, 600);
             pause_page.set_text(AXDISCRIMINATION_INSTRUCTIONS, true);
 
             pause_page.action(this);
-            //control.button_box.enable_all_buttons(CONTINUE);
         }
     }
 
@@ -69,7 +70,7 @@ Block task
             num_cycles = prac_items.size;
 
             // Prepare test page: progress bar, feedback and prompt enabled.
-            test_page.setup(num_cycles, true, true);
+            test_page.setup(num_cycles, AXDISCRIMINATION_SHOW_FEEDBACK, true);
         }
 
 

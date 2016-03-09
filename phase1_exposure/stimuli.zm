@@ -24,31 +24,18 @@ record TestItem
 
 // Test item table.
 //   index: item number
-TestItem[..][..] test_items =
+TestItem[..] test_items;
+
+int load_stimuli()
 {
-    { // SHould contain 1 audio file: instruction audio only
-        {1, "bada1.wav"},
-    },
-    { // Explicit audio files
-        {1, "bada1.wav"},
-        {2, "bada2.wav"},
-        {3, "bada3.wav"},
-        {4, "bada4.wav"},
-        {5, "bada5.wav"},
-        {6, "bada1.wav"},
-        {7, "bada2.wav"},
-        {8, "bada3.wav"},
-        {9, "bada4.wav"},
-        {10, "bada5.wav"},
-        {11, "bada1.wav"},
-        {12, "bada2.wav"},
-        {13, "bada3.wav"},
-        {14, "bada4.wav"},
-        {15, "bada5.wav"},
-        {16, "bada1.wav"},
-        {17, "bada2.wav"},
-        {18, "bada3.wav"},
-        {19, "bada4.wav"},
-        {0, "bada5.wav"},
+    int ret;
+    if(selected_group == 0){
+        // GROUP 0 is explicit condition
+        ret = test_items.load(stimuli_dir() + "phase1_explicit_instruction.csv", true, 0);
+    } else {
+        // GROUP 1 is implicit condition
+        ret = test_items.load(stimuli_dir() + "phase1_implicit_exposure.csv", true, 0);
     }
-};
+    
+    return ret; 
+}

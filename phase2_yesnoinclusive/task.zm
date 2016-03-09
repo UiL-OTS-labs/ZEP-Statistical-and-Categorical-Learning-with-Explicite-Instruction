@@ -48,7 +48,9 @@ Block task
     {
         on_event:entry()
         {
-//          pause_page.set_text_size(1000, 600);
+            load_practice_items();
+            load_stimuli();
+            
             pause_page.set_text(YESNOINCLUSIVE_INSTRUCTIONS, true);
             pause_page.action(this);
         }
@@ -64,7 +66,7 @@ Block task
             num_cycles = prac_items.size;
             
             // Prepare test page: progress bar and prompt enabled.
-            test_page.setup(num_cycles, true);
+            test_page.setup(num_cycles, YESNOINCLUSIVE_SHOW_FEEDBACK, true);
         }
 
 

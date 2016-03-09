@@ -1,0 +1,12 @@
+# Stimuli for the AX Discrimination phase; practice round
+# id: 		Number denoting the (unique) id of the stimulus
+# type1: 	Type of sound file 1 (S1;S2;S3;S4;S5)
+# type2:	Type of sound file 2 (S1;S2;S3;S4;S5)
+# sndfn1:	Name of sound file 1
+# sndfn2:	Name of sound file 2
+
+id;type1;type2;sndfn1;sndfn2
+1;S1;S1;"bada1.wav";"bada1.wav"
+2;S2;S4;"bada2.wav";"bada4.wav"
+3;S5;S1;"bada5.wav";"bada1.wav"
+4;S3;S3;"bada3.wav";"bada3.wav"
