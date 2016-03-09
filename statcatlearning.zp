@@ -73,6 +73,7 @@ Experiment experiment
         }
     }
 
+
     Part welcome
     {
         on_event:entry()
@@ -90,6 +91,7 @@ Experiment experiment
             phase1_exposure::action(this);
         }
     }
+
 
     Part phase1
     {

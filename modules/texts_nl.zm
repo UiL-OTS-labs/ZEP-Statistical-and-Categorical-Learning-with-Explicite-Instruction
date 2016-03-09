@@ -1,21 +1,27 @@
 /******************************************************************************\
 FILE:           std_texts_nl.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
 
 DESCRIPTION:
 
-Defines texts on buttons and other graphic elements.
+Defines texts on buttons and other graphic elements and specific texts
+for the Statistical and Categorical Learning Experiment by Tjitske Bootsma
 Dutch version.
 
 
 HISTORY:
 2009-12-02 TV   Created as part of the standard Zep modules.
+2016-03-09 AJM  Changed texts
 
 \******************************************************************************/
 
 
-// Button texts.
+/**********************************************************************
+*
+*               BUTTON TEXTS
+*
+***********************************************************************/
 const string    CONTINUE_BUTTON_TEXT            = "Ga door";
 const string    NEXT_BUTTON_TEXT                = "Volgende";
 const string    REPEAT_BUTTON_TEXT              = "Herhaal";
@@ -29,50 +35,96 @@ const string    FIRST_BUTTON_TEXT               = "1e";
 const string    SECOND_BUTTON_TEXT              = "2e";
 
 
-// Other texts.
-const string    WELCOME_TEXT                    = "Welkom";
-const string    THANK_YOU_TEXT                  = "Einde experiment\n\nHartelijk dank!";
-const string	END_OF_PRACTICE_TEXT			= "Dit is het einde van de oefening\n"
+/**********************************************************************
+*
+*               OTHER TEXTS
+*
+***********************************************************************/
+const string    WELCOME_TEXT                    = 
+    "Welkom";
+
+const string    THANK_YOU_TEXT                  = 
+    "Einde experiment\n\nHartelijk dank!";
+
+const string	END_OF_PRACTICE_TEXT			= 
+    "Dit is het einde van de oefening\n"
 	"Als u op dit moment nog vragen heeft, kunt u deze nu stellen.\n"
 	"Druk op enter om door te gaan";
 
 // Exposure / Instructions
-const string 	EXPOSURE_INTRODUCTION_TEXT = "Je hoort nu 120 geluiden.";
-const string	INSTRUCTION_INTRODUCTION_TEXT = "Luister nu naar een uitleg over de grammatica.";
+const string 	EXPOSURE_INTRODUCTION_TEXT = 
+    "Je gaat luisteren naar een aantal Chinese woorden,"
+    "terwijl je een kleurplaat inkleurt." 
+    "Na afloop is er een korte pauze en volgt er meer instructie over de taak."
+    "\n\n<i>Druk op ‘enter’ om door te gaan.</i>";
 
-// Experiment texts
+const string	INSTRUCTION_INTRODUCTION_TEXT = 
+    "Je gaat luisteren naar een uitleg over Chinese tonen. "
+    "Op papier heb je een weergave van de tonen die je kunnen helpen bij het begrijpen van de uitleg. "
+    "Na afloop is er een korte pauze en volgt er meer instructie over de taak."
+    "\n\n<i>Druk op ‘enter’ om door te gaan.</i>";
+
+/**********************************************************************
+*
+*               YES NO INCLUSIVE TASK
+*
+***********************************************************************/
+// Yes / No Inclusive Task
 const string	YESNOINCLUSIVE_INSTRUCTIONS		= 
-	"In het volgende segment hoort u telkens twee tonen uit de Chinese taal\n"
-	"Aan u de taak om aan te geven of de twee tonen samen een correct woord\n"
-	"vormen. Gebruik de buttonbox om uw keuze aan te geven"
-	"\n"
-	"We beginnen met een oefenronde, waarbij we klanken uit het \nNederlands gebruiken.\n"
-	"\n"
-	"<i>Druk op enter als u klaar bent te beginnen.</i>";
-const string	YESNOINCLUSIVE_QUESTION = "Hoorde u een echt woord?";
+	"Je gaat luisteren naar een aantal woorden. Van elk woord ga je aangeven of het "
+    "woord wel of geen woord zou kunnen zijn in de reeks die je zojuist gehoord hebt. " 
+    "Dit doe je met behulp van de knoppen ‘ja’ en ‘nee’ op de buttonbox."
+    "\n\nAntwoord ‘ja’ als het woord wel zou kunnen voorkomen in de reeks die je net gehoord hebt." 
+    "\nAntwoord ‘nee’ als het woord niet zou kunnen voorkomen in de reeks die je net gehoord hebt." 
+    "\nAntwoord pas nadat de audio is afgespeeld en antwoord zo snel mogelijk op je eerste ingeving." 
+    "\n\nEr volgt eerst een oefenronde met Nederlandse woorden."
+    "\nAntwoord ‘ja’ als het woord wel een Nederlands woord zou kunnen zijn."
+    "\nAntwoord ‘nee’ als het woord geen Nederlands woord zou kunnen zijn."
+	"\n\n"
+	"<i>Druk op ‘enter’ om door te gaan.</i>";
+
+const string    YESNOINCLUSIVE_END_OF_PRACTICE = "Einde van het oefenblok."
+    "\n\nNu volgen de Chinese woorden. Als er nog vragen zijn, kun je die nu stellen."
+    "\n\n<i>Druk op ‘enter’ om door te gaan.</i>";
+
+const string	YESNOINCLUSIVE_QUESTION = 
+    "Hoorde u een echt woord?";
+
+
+/**********************************************************************
+*
+*               AX DISCRIMINATION TASK
+*
+***********************************************************************/
 const string	AXDISCRIMINATION_INSTRUCTIONS = 
-    "<b>Dear participant,</b>\n"
-    "\n"
-    "Thank you for participating in this experiment.\n"
-    "\n"
-    "You are now going to hear word fragments over the headphones. "
-    "The word fragments come in pairs. Your task is to indicate "
-    "for each pair as quickly as possible whether you think the "
-    "two fragments are <i>the same</i> or <i>different</i>.\n"
-    "\n"
+    "Er volgt nu een taak waarin je gaat aangeven of twee tonen hetzelfde zijn of verschillend. "
+    "Je hoort steeds twee woorden die bestaan uit twee tonen. Wanneer beide woorden zijn afgespeeld, "
+    "mag je aangeven of de woorden precies hetzelfde toonpatroon laten horen of dat ze anders klinken. " 
+    "Dit doe je met behulp van de knoppen op de buttonbox."
+    "\nAntwoord ‘ja’ als de woorden hetzelfde zijn."
+    "\nAntwoord ‘nee’ als de woorden niet hetzelfde zijn."
+    "\n\n"
+    "Er volgt eerst een oefenblok."
+    "\n\n"
+    "<i>Druk op ‘enter’ om door te gaan.</i>";
 
-    "To respond, hit the left button on the button-box for "
-    "<i>Same</i> and the right button for <i>Different</i>.\n"
+const string AXDISCRIMINATION_QUESTION = 
+    "Zijn deze twee woorden hetzelfde?";
 
-//                "To respond, hit the left shift key for <i>Same</i> and the "
-//                "right shift key for <i>Different</i>.\n"
 
-//                "To respond, hit the left button on the button-box for "
-//                "<i>Same</i> and the right button for <i>Different</i>. "
-//                "Alternatively you can use the left or right shift keys.\n"
+/**********************************************************************
+*
+*               FORWARD DIGIT SPAN
+*
+***********************************************************************/
 
+const string    FORWARD_DIGIT_SPAN_INSTRUCTIONS =
+    "Er volgt nu een geheugentaak."
+    "\nIn deze taak krijg je een reeks getallen te zien. "
+    "Na een aantal seconden verdwijnen de getallen. Aan jou de "
+    "taak om dan de getallen in de gegeven volgorde in te typen en "
+    "dan op enter te drukken.\n"
     "\n"
-    "First we will do a short practice.\n"
+    "Er volgt eerst een oefenronde.\n"
     "\n"
-//                "<i>Hit Enter when ready to start.</i>", 
-    "<i>Hit any button on the button-box when ready to start.</i>";
+    "<i>Druk op ‘enter’ om door te gaan.</i>";

@@ -18,7 +18,7 @@ HISTORY:
 // Item table record.
 record TestItem
 {
-    int         id;              // item id
+    int         id;             // item id
     string      sndfn;          // stimulus sound filename 1
 }
 

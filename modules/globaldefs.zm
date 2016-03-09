@@ -47,3 +47,8 @@ const bool      SHOW_ASSIGNED_GROUP             = true;
 // How long do the virtual (on screen) buttons become dark after
 // pressing a physical button on the button box
 const dur 		BUTTON_FEEDBACK_DURATION		= 100ms;
+
+
+// Wether or not to show the question the participant awnsers
+// in the test phase (otherwise practice phase only)
+const bool 		ALWAYS_SHOW_PROMPT				= false;
