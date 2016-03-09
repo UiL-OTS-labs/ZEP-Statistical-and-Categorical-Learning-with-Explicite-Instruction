@@ -1,7 +1,7 @@
 /******************************************************************************\
 FILE:           test_page.zm
 AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
-ADAPTED BY:     -
+ADAPTED BY:     Jan de Mooij <A.J.deMooij@uu.nl>
 
 DESCRIPTION:
 
@@ -11,6 +11,7 @@ It handles presenting the stimulus and recording the participant's response.
 
 HISTORY:
 2012-01-30 TV   Created.
+2016-03-03 AJM  Adapted
 
 \******************************************************************************/
 
@@ -21,7 +22,6 @@ Page test_page
 {
     TestItem    item;           // trial control parameters
 
-
     init()
     {
         fill_pattern_color = TEST_PAGE_COLOR;
@@ -30,7 +30,7 @@ Page test_page
 
     on_event:key_press()
     {
-        // Handle left-shift (same) and right-shift (diff).
+        // Handle left-shift (no) and right-shift (yes).
         if (input_key == KEY_Shift_L)
             response.process_hit(0, event_time);
         else if (input_key == KEY_Shift_R)
@@ -39,13 +39,10 @@ Page test_page
             handle_special_key(this, input_key, input_modifiers);
     }
 
-
     on_event:message()
     {
-        // Process button-box message. See setup() below.
         response.process_hit(message_arg, event_time);
     }
-
 
     VerticalLayout layout
     {
@@ -60,7 +57,7 @@ Page test_page
         {
             init()
             {
-//                fill_pattern_color = TEST_PAGE_STIMULUS_COLOR;
+//              fill_pattern_color = TEST_PAGE_STIMULUS_COLOR;
                 size = 450, 100;
                 offset_x = width / 2;
                 offset_y = height / 2;
@@ -77,7 +74,6 @@ Page test_page
                 }
             }
         }
-
 
         HorizontalLayout buttons
         {
@@ -107,19 +103,17 @@ Page test_page
 
             ButtonGadget button1
             {
-
-                int button_response = 0;
+                int button_response;
 
                 init()
                 {
-                    text = "Same";
                     font_family = TEST_PAGE_BUTTON_FONT_FAMILY;
                     font_size = TEST_PAGE_BUTTON_FONT_SIZE;
                     fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
                     text_color = TEST_PAGE_BUTTON_TEXT_COLOR;
                     size = 150, 75;
+                    is_sensitive=false;
                 }
-
 
                 on_event:activate()
                 {
@@ -130,17 +124,16 @@ Page test_page
 
             ButtonGadget button2
             {
-
-                int button_response = 1;
+                int button_response;
 
                 init()
                 {
-                    text = "Different";
                     font_family = TEST_PAGE_BUTTON_FONT_FAMILY;
                     font_size = TEST_PAGE_BUTTON_FONT_SIZE;
                     fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
                     text_color = TEST_PAGE_BUTTON_TEXT_COLOR;
                     size = 150, 75;
+                    is_sensitive=false;
                 }
 
 
@@ -150,7 +143,6 @@ Page test_page
                 }
             }
         }
-
 
         time start_fixation(time t)
         {
@@ -167,6 +159,8 @@ Page test_page
             full_abort();
             buttons.button1.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
             buttons.button2.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
+            buttons.button1.is_sensitive=false;
+            buttons.button2.is_sensitive=false;
         }
     }
 
@@ -174,12 +168,7 @@ Page test_page
     SoundChain stimulus
     {
         // Sound source/producer object.
-        SoundSequence seq
-        {
-            SoundFile clip1 {}
-            SoundFile clip2 {}
-        }
-
+        SoundFile clip { }
 
         // Sound sink/consumer object.
         SoundPlayback playback {}
@@ -190,9 +179,7 @@ Page test_page
             abort();
 
             playback.device = sound_output_device;
-            seq.clip1.file = stimuli_dir() + "sounds/" + item.sndfn1;
-            seq.clip2.file = stimuli_dir() + "sounds/" + item.sndfn2;
-            seq.clip1.trailer_duration = INTERSTIMULUS_INTERVAL;
+            clip.file = stimuli_dir() + "sounds/" + item.sndfn;
 
             start(t);
 
@@ -204,10 +191,9 @@ Page test_page
     Response response
     {
         // Response data.
-        int     value;          // response value: 0=same, 1=diff, -1=timeout
-        int     rt;             // response time [ms]
-        int     correct;        // correct response: 0=no, 1=yes, -1=n.a.
-
+        int     value;          // response value: 0=no, 1=yes
+        int     rt;
+        int     correct;
 
         void clear()
         {
@@ -226,6 +212,7 @@ Page test_page
             if (validity == HIT_VALID)
             {
                 value = val;
+                correct = val == item.expected_answer;
                 rt = int(reaction_time(0));
 
                 time stop_time = now();
@@ -234,11 +221,6 @@ Page test_page
                     stop_time = layout.buttons.feedback_provider.start_feedback(layout.buttons.button1);
                 else
                     stop_time = layout.buttons.feedback_provider.start_feedback(layout.buttons.button2);
-
-                if (item.type1 == item.type2)
-                    correct = val == 0; // correct if response is same
-                else
-                    correct = val != 0; // correct if response is diff
 
                 ignore_remaining_hits();
 
@@ -250,24 +232,26 @@ Page test_page
             }
         }
 
+        on_event:start()
+        {
+            layout.buttons.button1.is_sensitive=true;
+            layout.buttons.button2.is_sensitive=true;
+        }
 
         on_event:finish()
         {
             real correctness = 0;
             if (num_valid_hits > 0) correctness = correct ? 1 : -1;
-
-            if (!test_page_overlay.start_feedback(this, correctness, 
-                    FEEDBACK_DURATION)) 
+            if(!test_page_overlay.start_feedback(this, correctness, 
+                    FEEDBACK_DURATION))
                 done(CONTINUE);
         }
-
 
         on_event:message()
         {
             done(CONTINUE);
         }
     }
-
 
     // Aborts any ongoing activity on this page and signals the initiator
     // of the trial that we're done.
@@ -293,9 +277,8 @@ Page test_page
         test_page_overlay.setup(this);
 
         // Show or hide prompt.
-        test_page_overlay.show_prompt(pr ? 
-            "did you hear <i>same</i> or <i>different</i> sounds" : "", 
-            true);
+        test_page_overlay.show_prompt(pr || ALWAYS_SHOW_PROMPT ? 
+            YESNOINCLUSIVE_QUESTION : "", true);
 
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
@@ -303,12 +286,38 @@ Page test_page
         // Enable or disable feedback.
         test_page_overlay.enable_feedback(fb);          // disabled if false
 
-
-        // Enable button-box buttons 0 and 1 for resp. same(0) and diff(1).
         control.target = this;
         control.button_box.disable_buttons();
-        control.button_box.enable_button(0, layout.buttons.button1.button_response); // button 0 means no(0)
-        control.button_box.enable_button(2, layout.buttons.button2.button_response); // button 2 means yes(1)
+        setup_button_with_codes();
+    }
+
+    void setup_button_with_codes()
+    {
+        int left_code;
+        int right_code;
+        string left_text;
+        string right_text;
+
+        if(expdb.participant.get_enum_field("side_of_yes_button") == "left")
+        {
+            left_code = 1; left_text = YES_BUTTON_TEXT;
+            right_code = 0; right_text = NO_BUTTON_TEXT;
+        } else if(expdb.participant.get_enum_field("side_of_yes_button") == "right") {
+            left_code = 0; left_text = NO_BUTTON_TEXT;
+            right_code = 1; right_text = YES_BUTTON_TEXT;
+        } else {
+            left_code = 1; left_text = YES_BUTTON_TEXT;
+            right_code = 0; right_text = NO_BUTTON_TEXT;
+            println("No position for \"yes\" button provided. Asuming LEFT");
+        }
+
+        layout.buttons.button1.button_response = left_code;
+        layout.buttons.button2.button_response = right_code;
+        layout.buttons.button1.text = left_text;
+        layout.buttons.button2.text = right_text;
+
+        control.button_box.enable_button(0, left_code); // button 0 means same(0)
+        control.button_box.enable_button(2, right_code); // button 1 means diff(1)
     }
 
 
@@ -316,9 +325,6 @@ Page test_page
     void cleanup()
     {
         test_page_overlay.cleanup();
-
-        control.button_box.disable_buttons();
-        control.target = null;
     }
 
 
@@ -340,27 +346,21 @@ Page test_page
         // Start fixation symbol.
         time fixoffset = layout.start_fixation(tref);
 
-
         // Start stimulus at fixation offset.
         time stimoffset = stimulus.play(fixoffset);
 
-
         // Response interval starts at stimulus offset.
-        response.start(stimoffset, RESPONSE_DURATION);
-
+        response.start(stimoffset);
 
         // Update progress counter (if enabled).
         test_page_overlay.update_progress_bar(count);
 
-
         // Update status line on control window. Cleared in done() above.
         control.set_status(
-            string(item.id) + "  " + 
-            string(item.type1) + "  " + 
-            string(item.type2) + "  " + 
-            string(item.sndfn1) + "  " + 
-            string(item.sndfn2));
-
+            "ID: " + string(item.id) + "    " + 
+            "Type: " + string(item.type) + "    " + 
+            "Expected answer: " + item.expected_answer + "    " + 
+            "File: " + string(item.sndfn));
 
         // Remember who to signal when the trial is over.
         target = caller;

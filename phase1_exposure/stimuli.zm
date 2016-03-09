@@ -1,0 +1,41 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Jan de Mooij <A.J.deMooij@uu.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2016-03-03 AJM  Created
+
+\******************************************************************************/
+
+
+// Item table record.
+record TestItem
+{
+    int         id;             // item id
+    string      sndfn;          // stimulus sound filename 1
+}
+
+// Test item table.
+//   index: item number
+TestItem[..] test_items;
+
+int load_stimuli()
+{
+    int ret;
+    if(selected_group == 0){
+        // GROUP 0 is explicit condition
+        ret = test_items.load(stimuli_dir() + "phase1_explicit_instruction.csv", true, 0);
+    } else {
+        // GROUP 1 is implicit condition
+        ret = test_items.load(stimuli_dir() + "phase1_implicit_exposure.csv", true, 0);
+    }
+    
+    return ret; 
+}

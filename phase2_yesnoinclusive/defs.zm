@@ -21,5 +21,8 @@ const dur       INTERTRIAL_INTERVAL             = 1000ms;
 // Duration of the fixation symbol presentation.
 const dur       FIXATION_DURATION               = 1000ms;
 
+// Duration of the feedback presentation.
+const dur       FEEDBACK_DURATION               = 1000ms;
+
 // Time between the two sound files
 const dur	INTERSTIMULUS_INTERVAL 				= 250ms;

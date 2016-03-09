@@ -9,36 +9,43 @@ Defines the formats of output table(s).
 
 
 HISTORY:
-2012-01-30 TV   Created.
+2012-03-20 TV   Created.
 
 \******************************************************************************/
 
 
-// Test output table record.
+// Test output table record 1.
 record TestOutput
+{
+    int         span;           // trial number
+}
+
+
+// Test output table record 2.
+record TestOutput2
 {
     int         trialnum;       // trial number
 
-    int         id;             // item id
-    StimType    type1;          // stimulus type for first interval
-    StimType    type2;          // stimulus type for second interval
-    string      sndfn1;         // stimulus sound filename first interval
-    string      sndfn2;         // stimulus sound filename second interval
+    string      digits;         // target sequence of digits
 
-    int         value;          // response value: 0=diff, 1=same, -1=timeout
+    string      value;          // value: entered text
     int         rt;             // response time [ms]
     int         correct;        // correct response: 0=no, 1=yes, -1=n.a.
 }
 
 
-// Test output table.
+// Test output table 1.
 TestOutput[..] test_output;
+
+
+// Test output table 2.
+TestOutput2[..] test_output2;
 
 
 //------------------------------------------------------------------------------
 
 
-// Appends one row of data to test output table.
+// Appends one row of data to test output table 1.
 void test_output_append(TestOutput data)
 {
     test_output.size = test_output.size + 1;
@@ -46,7 +53,7 @@ void test_output_append(TestOutput data)
 }
 
 
-// Writes test output table contents to CSV file and clears the table.
+// Writes test output table 1 contents to CSV file and clears the table.
 void test_output_save()
 {
     // Append table to CSV file (create if non-existent). The filename format
@@ -54,4 +61,23 @@ void test_output_save()
     string fn = expdb.experiment.session.create_table(namespace_name, 1);
     test_output.append(fn, namespace_name + ": test results");
     test_output.size = 0;
+}
+
+
+// Appends one row of data to test output table 2.
+void test_output2_append(TestOutput2 data)
+{
+    test_output2.size = test_output2.size + 1;
+    test_output2[test_output2.size-1] = data;
+}
+
+
+// Writes test output table 2 contents to CSV file and clears the table.
+void test_output2_save()
+{
+    // Append table to CSV file (create if non-existent). The filename format
+    // is: <dbname>/<dbnum>/<expname>/<phasename>/ses<sesid>-<tblnum>.csv
+    string fn = expdb.experiment.session.create_table(namespace_name, 2);
+    test_output2.append(fn, namespace_name + ": test results 2");
+    test_output2.size = 0;
 }

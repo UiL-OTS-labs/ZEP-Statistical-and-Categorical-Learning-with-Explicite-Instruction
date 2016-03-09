@@ -1,0 +1,10 @@
+# Practice items for the Yes/No Inclusive task
+# id is a number
+# Type is the type of sound (rule), either "R1" or "R2"
+# Expected answer: 1=yes,0=no
+# sndfn is the name of the sound file
+
+id;type;expected_answer;sndfn
+1;R1;0;"bada1.wav"
+2;R2;1;"bada5.wav"
+3;R2;1;"bada3.wav"

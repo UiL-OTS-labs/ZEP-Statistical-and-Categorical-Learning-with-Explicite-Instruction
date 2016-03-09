@@ -1,0 +1,59 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2012-01-30 TV   Created.
+
+\******************************************************************************/
+
+
+// Symbolic definition of stimulus type.
+enum StimType
+{
+    S1,                 // ba-da continuum step 1 (begin)
+    S2,                 // ba-da continuum step 2
+    S3,                 // ba-da continuum step 3 (center)
+    S4,                 // ba-da continuum step 4
+    S5,                 // ba-da continuum step 5 (end)
+}
+
+
+// Item table record.
+record TestItem
+{
+    int         id;             // item id
+    StimType    type1;          // stimulus type for first interval
+    StimType    type2;          // stimulus type for second interval
+    string      sndfn1;         // stimulus sound filename first interval
+    string      sndfn2;         // stimulus sound filename second interval
+}
+
+
+// Practice item table.
+//   index: item number
+TestItem[..] prac_items;
+
+
+// Test item table.
+//   index: item number
+TestItem[..] test_items;
+
+int load_practice_items()
+{
+    int ret = prac_items.load(stimuli_dir() + "phase3_axdiscrimination_practice.csv", true, 0);
+    return ret;
+}
+
+int load_stimuli()
+{
+    int ret = test_items.load(stimuli_dir() + "phase3_axdiscrimination_testitems.csv", true, 0);
+    return ret;
+}

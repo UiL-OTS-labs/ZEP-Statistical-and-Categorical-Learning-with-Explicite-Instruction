@@ -22,12 +22,10 @@ record TestOutput
     int         id;                 // item id
     ItemType    type;               // item type / rule
     int         expected_answer;    // Item correctness (1=yes, 0=no)
-    string      sndfn1;             // stimulus sound 1 filename
-    string      sndfn2;             // stimulus sound 2 filename
+    string      sndfn;             // stimulus sound 1 filename
     int         value;              // response value: 0=no, 1=yes
     int         correct;            // 1 = correct, 0 = incorrect
     int         rt;                 // response time
-    int         audio_end;          // Start time of second sound (absolute minimum for valid reaction time)
 }
 
 
