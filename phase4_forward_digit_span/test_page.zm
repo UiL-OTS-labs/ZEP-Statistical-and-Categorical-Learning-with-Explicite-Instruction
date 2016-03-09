@@ -246,8 +246,8 @@ Page test_page
         test_page_overlay.setup(this);
 
         // Show or hide prompt.
-        test_page_overlay.show_prompt(pr ? 
-            "type in digits in given order" : "");
+        test_page_overlay.show_prompt(pr || ALWAYS_SHOW_PROMPT ? 
+            "Type de getallen in de getoonde volgorde" : "");
 
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0

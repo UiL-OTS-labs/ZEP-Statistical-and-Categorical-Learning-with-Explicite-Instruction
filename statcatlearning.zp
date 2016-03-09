@@ -91,21 +91,21 @@ Experiment experiment
     //     }
     // }
 
-    // Part phase1
-    // {
-    //     on_event:entry()
-    //     {
-    //         phase2_yesnoinclusive::action(this);
-    //     }
-    // }
+    Part phase1
+    {
+        on_event:entry()
+        {
+            phase2_yesnoinclusive::action(this);
+        }
+    }
 
-    // Part phase2
-    // {
-    //     on_event:entry()
-    //     {
-    //         phase3_axdiscrimination::action(this);
-    //     }
-    // }
+    Part phase2
+    {
+        on_event:entry()
+        {
+            phase3_axdiscrimination::action(this);
+        }
+    }
 
     Part phase3
     {

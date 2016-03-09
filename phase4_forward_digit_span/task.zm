@@ -50,18 +50,7 @@ Block task
         {
 //            pause_page.set_text_size(1000, 600);
             pause_page.set_text(
-                "<b>Dear participant,</b>\n"
-                "\n"
-                "Thank you for participating in this experiment.\n"
-                "\n"
-                "This is memory experiment. You will see a sequence of digits "
-                "on the screen. After a few seconds they disappear. Your task "
-                "is then to type in the digits in the given order and then "
-                "hit Enter.\n"
-                "\n"
-                "First we will do a short practice.\n"
-                "\n"
-                "<i>Hit Enter when ready to start.</i>", 
+                FORWARD_DIGIT_SPAN_INSTRUCTIONS, 
                 true);
 
             pause_page.action(this);
@@ -117,13 +106,7 @@ Block task
     {
         on_event:entry()
         {
-            pause_page.set_text(
-                "End of the practice part.\n"
-                "\n"
-                "If you have any questions at this moment please ask the "
-                "experimenter now.\n"
-                "\n"
-                "<i>Hit Enter when ready to proceed.</i>", 
+            pause_page.set_text(END_OF_PRACTICE_TEXT, 
                 true);
 
             pause_page.action(this);

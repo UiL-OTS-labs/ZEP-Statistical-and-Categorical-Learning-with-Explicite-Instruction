@@ -25,7 +25,7 @@ record TestOutput
     string      sndfn1;         // stimulus sound filename first interval
     string      sndfn2;         // stimulus sound filename second interval
 
-    int         value;          // response value: 0=diff, 1=same, -1=timeout
+    int         value;          // response value: 0=no, 1=yes, -1=timeout
     int         rt;             // response time [ms]
     int         correct;        // correct response: 0=no, 1=yes, -1=n.a.
 }

@@ -103,16 +103,16 @@ Page test_page
 
             ButtonGadget button1
             {
-                int button_response = 0;
+                int button_response;
 
                 init()
                 {
-                    text = NO_BUTTON_TEXT;
                     font_family = TEST_PAGE_BUTTON_FONT_FAMILY;
                     font_size = TEST_PAGE_BUTTON_FONT_SIZE;
                     fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
                     text_color = TEST_PAGE_BUTTON_TEXT_COLOR;
                     size = 150, 75;
+                    is_sensitive=false;
                 }
 
                 on_event:activate()
@@ -124,16 +124,16 @@ Page test_page
 
             ButtonGadget button2
             {
-                int button_response = 1;
+                int button_response;
 
                 init()
                 {
-                    text = YES_BUTTON_TEXT;
                     font_family = TEST_PAGE_BUTTON_FONT_FAMILY;
                     font_size = TEST_PAGE_BUTTON_FONT_SIZE;
                     fill_pattern_color = TEST_PAGE_BUTTON_COLOR;
                     text_color = TEST_PAGE_BUTTON_TEXT_COLOR;
                     size = 150, 75;
+                    is_sensitive=false;
                 }
 
 
@@ -159,6 +159,8 @@ Page test_page
             full_abort();
             buttons.button1.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
             buttons.button2.fill_pattern_color=TEST_PAGE_BUTTON_COLOR;
+            buttons.button1.is_sensitive=false;
+            buttons.button2.is_sensitive=false;
         }
     }
 
@@ -229,6 +231,12 @@ Page test_page
             }
         }
 
+        on_event:start()
+        {
+            layout.buttons.button1.is_sensitive=true;
+            layout.buttons.button2.is_sensitive=true;
+        }
+
         on_event:finish()
         {
             done(CONTINUE);
@@ -259,7 +267,7 @@ Page test_page
         test_page_overlay.setup(this);
 
         // Show or hide prompt.
-        test_page_overlay.show_prompt(pr ? 
+        test_page_overlay.show_prompt(pr || ALWAYS_SHOW_PROMPT ? 
             YESNOINCLUSIVE_QUESTION : "", true);
 
         // Enable or disable the progress bar.
@@ -267,8 +275,36 @@ Page test_page
 
         control.target = this;
         control.button_box.disable_buttons();
-        control.button_box.enable_button(0, layout.buttons.button1.button_response); // button 0 means no(0)
-        control.button_box.enable_button(2, layout.buttons.button2.button_response); // button 2 means yes(1)
+        setup_button_with_codes();
+    }
+
+    void setup_button_with_codes()
+    {
+        int left_code;
+        int right_code;
+        string left_text;
+        string right_text;
+
+        if(expdb.participant.get_enum_field("side_of_yes_button") == "left")
+        {
+            left_code = 1; left_text = YES_BUTTON_TEXT;
+            right_code = 0; right_text = NO_BUTTON_TEXT;
+        } else if(expdb.participant.get_enum_field("side_of_yes_button") == "right") {
+            left_code = 0; left_text = NO_BUTTON_TEXT;
+            right_code = 1; right_text = YES_BUTTON_TEXT;
+        } else {
+            left_code = 1; left_text = YES_BUTTON_TEXT;
+            right_code = 0; right_text = NO_BUTTON_TEXT;
+            println("No position for \"yes\" button provided. Asuming LEFT");
+        }
+
+        layout.buttons.button1.button_response = left_code;
+        layout.buttons.button2.button_response = right_code;
+        layout.buttons.button1.text = left_text;
+        layout.buttons.button2.text = right_text;
+
+        control.button_box.enable_button(0, left_code); // button 0 means same(0)
+        control.button_box.enable_button(2, right_code); // button 1 means diff(1)
     }
 
 
@@ -308,9 +344,10 @@ Page test_page
 
         // Update status line on control window. Cleared in done() above.
         control.set_status(
-            string(item.id) + "  " + 
-            string(item.type) + "  " + 
-            string(item.sndfn));
+            "ID: " + string(item.id) + "    " + 
+            "Type: " + string(item.type) + "    " + 
+            "Expected answer: " + item.expected_answer + "    " + 
+            "File: " + string(item.sndfn));
 
         // Remember who to signal when the trial is over.
         target = caller;

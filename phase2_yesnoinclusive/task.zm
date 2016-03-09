@@ -100,7 +100,7 @@ Block task
         {
             control.button_box.disable_buttons();
             control.button_box.enable_button(1,0);
-            pause_page.set_text(END_OF_PRACTICE_TEXT, true);
+            pause_page.set_text(YESNOINCLUSIVE_END_OF_PRACTICE, true);
             pause_page.action(this);
         }
     }
