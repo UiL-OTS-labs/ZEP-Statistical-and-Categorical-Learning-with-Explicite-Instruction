@@ -38,6 +38,8 @@ Block task
                 pause_page.set_text(EXPOSURE_INTRODUCTION_TEXT, true);
             }
 
+            load_stimuli();
+
             pause_page.action(this);
         }
     }
@@ -53,7 +55,8 @@ Block task
             // Randomize test items table.
             //if (shuffle_test_items() != OK) terminate;
 
-            num_cycles = test_items[selected_group].size;
+            //num_cycles = test_items[selected_group].size;
+            num_cycles = test_items.size;
 
             // Prepare test page: progress bar enabled, prompt disabled.
             test_page.setup(num_cycles, false);
@@ -70,7 +73,8 @@ Block task
         {
             on_event:entry()
             {
-                item = test_items[selected_group][test.cycle];
+                //item = test_items[selected_group][test.cycle];
+                item = test_items[test.cycle];
                 test_page.action(this, item, reference_time, test.cycle);
             }
 
