@@ -20,7 +20,8 @@ import std_sound_output_device;
 Page test_page
 {
     TestItem    item;           // trial control parameters
-
+    int left_code;
+    int right_code;
 
     init()
     {
@@ -32,9 +33,11 @@ Page test_page
     {
         // Handle left-shift (same) and right-shift (diff).
         if (input_key == KEY_Shift_L)
-            response.process_hit(0, event_time);
+            // response.process_hit(0, event_time);
+            response.process_hit(left_code, event_time);
         else if (input_key == KEY_Shift_R)
-            response.process_hit(1, event_time);
+            // response.process_hit(1, event_time);
+            response.process_hit(right_code, event_time);
         else
             handle_special_key(this, input_key, input_modifiers);
     }
@@ -317,8 +320,6 @@ Page test_page
 
     void setup_button_with_codes()
     {
-        int left_code;
-        int right_code;
         string left_text;
         string right_text;
 
